@@ -1,0 +1,187 @@
+
+!
+! Last configuration change at 06:10:40 UTC Wed Apr 13 2011
+!
+version 15.0
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Cisco2911
+!
+boot-start-marker
+boot-end-marker
+!
+logging buffered 51200 warnings
+enable secret 5 CHANGEME
+!
+no aaa new-model
+!
+no ipv6 cef
+ip source-route
+ip cef
+!
+!
+ip dhcp excluded-address 192.168.12.1 192.168.12.49
+ip dhcp excluded-address 192.168.12.100 192.168.12.254
+ip dhcp excluded-address 192.168.13.1 192.168.13.49
+ip dhcp excluded-address 192.168.13.100 192.168.13.254
+ip dhcp excluded-address 192.168.14.1 192.168.14.49
+ip dhcp excluded-address 192.168.14.100 192.168.14.254
+ip dhcp excluded-address 192.168.15.1 192.168.15.49
+ip dhcp excluded-address 192.168.15.100 192.168.15.254
+!
+ip dhcp pool pool1
+   network 192.168.12.0 255.255.255.0
+   default-router 192.168.12.1 
+   dns-server 8.8.8.8 
+   domain-name itg12.local
+!
+ip dhcp pool pool13
+   network 192.168.13.0 255.255.255.0
+   default-router 192.168.13.1 
+   dns-server 8.8.8.8 
+   domain-name itg13.local
+!
+ip dhcp pool pool14
+   network 192.168.14.0 255.255.255.0
+   default-router 192.168.14.1 
+   dns-server 8.8.8.8 
+   domain-name itg14.local
+!
+ip dhcp pool pool15
+   network 192.168.15.0 255.255.255.0
+   default-router 192.168.15.1 
+   dns-server 8.8.8.8 
+   domain-name itg15.local
+!
+!
+ip domain name itg.local
+ip name-server 8.8.8.8
+ip ddns update method dyndns
+ HTTP
+  add http://YOURDYNDNSUSERNAME:YOURDYNDNSPASSWORD@members.dyndns.org/nic/update?hostname=<h>&myip=<a>
+ interval maximum 1 0 0 0
+!
+multilink bundle-name authenticated
+!
+!
+!
+crypto pki trustpoint TP-self-signed-701361969
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-701361969
+ revocation-check none
+ rsakeypair TP-self-signed-701361969
+!
+!
+crypto pki certificate chain TP-self-signed-701361969
+ certificate self-signed 01
+  30820249 308201B2 A0030201 02020101 300D0609 2A864886 F70D0101 04050030 
+  30312E30 2C060355 04031325 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 37303133 36313936 39301E17 0D313130 34313032 30353430 
+  365A170D 32303031 30313030 30303030 5A303031 2E302C06 03550403 1325494F 
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3730 31333631 
+  39363930 819F300D 06092A86 4886F70D 01010105 0003818D 00308189 02818100 
+  EDF63C20 85454231 C967A3AB 6260A604 49704C9B C30B6074 034C394A 61887794 
+  97440CB2 27642DF7 2A6AEADC ECFEDAA4 C2EFEC24 8B52B94D F1430222 D1A661CC 
+  7857A81A 746314DB 69D356C4 077875E0 643FE278 B1E6D8C6 A57C5796 E90EA125 
+  5FD0EE50 8265D601 A1C895D4 AC810F21 7D61B228 4FA21D74 98878F73 0504F3C1 
+  02030100 01A37330 71300F06 03551D13 0101FF04 05300301 01FF301E 0603551D 
+  11041730 15821343 6973636F 32393131 2E697467 2E6C6F63 616C301F 0603551D 
+  23041830 168014E3 BC517BD9 0F4FFFB0 948E94FC E2984255 C7538E30 1D060355 
+  1D0E0416 0414E3BC 517BD90F 4FFFB094 8E94FCE2 984255C7 538E300D 06092A86 
+  4886F70D 01010405 00038181 0076C824 A805123B E8FB2FFD 1D76C528 11EC519C 
+  8B7F03A6 7CA7103B 9145978C C86860BC 51E8889B 5597A1F0 D5B7D877 D093C204 
+  C345DB03 158360C0 205EEBCC E9A65D94 11B58897 90F05D9F 13F44C02 167CD349 
+  3A660E35 C8F31D1B E4533F51 99B02AFB 121DB618 93C01238 2830955C DC1BA2C8 
+  16B7B2E1 352172F1 5F4115DB 97
+  	quit
+license udi pid CISCO2911/K9 sn FTX1437A11V
+!
+!
+username admin privilege 15 secret 5 CHANGEME
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ description $ETH-LAN$$ETH-SW-LAUNCH$$INTF-INFO-GE 0/0$
+ no ip address
+ ip nat inside
+ ip virtual-reassembly
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.1
+ encapsulation dot1Q 1 native
+ ip address 192.168.12.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly
+!
+interface GigabitEthernet0/0.13
+ encapsulation dot1Q 13
+ ip address 192.168.13.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly
+!
+interface GigabitEthernet0/0.14
+ encapsulation dot1Q 14
+ ip address 192.168.14.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly
+!
+interface GigabitEthernet0/0.15
+ encapsulation dot1Q 15
+ ip address 192.168.15.1 255.255.255.0
+ ip access-group 105 in
+ ip nat inside
+ ip virtual-reassembly
+!
+interface GigabitEthernet0/1
+ ip ddns update hostname test.itgeniusdns.com
+ ip ddns update dyndns
+ ip address dhcp
+ ip nat outside
+ ip virtual-reassembly
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+ip forward-protocol nd
+!
+ip http server
+ip http authentication local
+ip http secure-server
+ip http timeout-policy idle 60 life 86400 requests 10000
+!
+ip nat inside source list 1 interface GigabitEthernet0/1 overload
+ip nat inside source static tcp 192.168.12.1 23 interface GigabitEthernet0/1 23
+ip route 0.0.0.0 0.0.0.0 192.168.2.1
+!
+access-list 1 permit 192.168.0.0 0.0.255.255
+access-list 105 deny   ip 192.168.15.0 0.0.0.255 192.168.0.0 0.0.255.255
+access-list 105 permit ip any any
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ login local
+line aux 0
+line vty 0 4
+ privilege level 15
+ password CHANGEME
+ login
+ transport input telnet ssh
+!
+scheduler allocate 20000 1000
+end

@@ -1,0 +1,85 @@
+!
+version 12.4
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname cisco871
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 CHANGEME
+!
+no aaa new-model
+!
+resource policy
+!
+ip cef
+!
+!
+!
+!
+ip domain name yourhostname.local
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0
+!
+interface FastEthernet1
+!
+interface FastEthernet2
+!
+interface FastEthernet3
+!
+interface FastEthernet4
+ ip address 192.168.2.25 255.255.255.0
+ ip nat outside
+ ip virtual-reassembly
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ ip address 192.168.25.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly
+!
+ip route 0.0.0.0 0.0.0.0 192.168.2.1
+!
+!
+ip http server
+no ip http secure-server
+ip nat inside source list 1 interface FastEthernet4 overload
+ip nat inside source static tcp 192.168.25.1 23 interface FastEthernet4 23
+!
+access-list 1 permit 192.168.0.0 0.0.255.255
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ no modem enable
+line aux 0
+line vty 0 4
+ password CHANGEME
+ login
+!
+scheduler max-task-time 5000
+!
+webvpn context Default_context
+ ssl authenticate verify all
+ !
+ no inservice
+!
+end
+

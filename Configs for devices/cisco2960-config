@@ -1,0 +1,158 @@
+
+!
+version 12.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Switch
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 CHANGEME
+!
+!
+!
+no aaa new-model
+authentication mac-move permit
+ip subnet-zero
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2882148736
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2882148736
+ revocation-check none
+ rsakeypair TP-self-signed-2882148736
+!
+!
+crypto pki certificate chain TP-self-signed-2882148736
+ certificate self-signed 01
+  3082023F 308201A8 A0030201 02020101 300D0609 2A864886 F70D0101 04050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 32383832 31343837 3336301E 170D3933 30333031 30303031 
+  34385A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D32 38383231 
+  34383733 3630819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281 
+  8100A8DC 7E5A2855 5DD6331C 2523F171 9BFEA720 8633C0B2 1E3E1066 F04B113C 
+  705E7D9A C441E28E 90268680 C653BE08 1872C590 F6AC0822 C26287F9 09B3591B 
+  426EE6A1 C63408E5 A81708DD EB140055 444E4E87 DBB5ABAA 5AB5E8FB 2C6FA6C3 
+  45BA9DEF D8882D0D 6E62889D F05775DB 69188776 DE06C7D2 AFC37C2B DF3FA5EC 
+  7ACD0203 010001A3 67306530 0F060355 1D130101 FF040530 030101FF 30120603 
+  551D1104 0B300982 07537769 7463682E 301F0603 551D2304 18301680 1486E4D5 
+  27E9BBA1 2A634169 65AD3AC2 67EF568C B7301D06 03551D0E 04160414 86E4D527 
+  E9BBA12A 63416965 AD3AC267 EF568CB7 300D0609 2A864886 F70D0101 04050003 
+  81810075 10E89708 F1AB484C B53D811F 13E84289 77ABDE39 F5EDA0CE 0DF65FD1 
+  78637DFD 87345D22 8BCE4383 221CE231 BB30101F 6CC9CBA6 CB3CDBD2 B4DCFF5D 
+  135B5C90 FCF35B85 F11919DF A184064D 1E5C38A4 97F3A29B 6C5B2F18 90A2F84D 
+  556F605F FAC4F32B A8687B0A F35D4D06 3047444B BC32D680 42C9C5CB 98B60035 CA317D
+  quit
+spanning-tree mode pvst
+spanning-tree etherchannel guard misconfig
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+!
+interface FastEthernet0
+ no ip address
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface GigabitEthernet0/3
+!
+interface GigabitEthernet0/4
+!
+interface GigabitEthernet0/5
+!
+interface GigabitEthernet0/6
+!
+interface GigabitEthernet0/7
+!
+interface GigabitEthernet0/8
+!
+interface GigabitEthernet0/9
+!
+interface GigabitEthernet0/10
+!
+interface GigabitEthernet0/11
+!
+interface GigabitEthernet0/12
+!
+interface GigabitEthernet0/13
+ switchport access vlan 13
+!
+interface GigabitEthernet0/14
+ switchport access vlan 13
+!
+interface GigabitEthernet0/15
+ switchport access vlan 13
+!
+interface GigabitEthernet0/16
+ switchport access vlan 13
+!
+interface GigabitEthernet0/17
+ switchport access vlan 14
+!
+interface GigabitEthernet0/18
+ switchport access vlan 14
+!
+interface GigabitEthernet0/19
+ switchport access vlan 14
+!
+interface GigabitEthernet0/20
+ switchport access vlan 14
+!
+interface GigabitEthernet0/21
+ switchport access vlan 15
+!
+interface GigabitEthernet0/22
+ switchport mode trunk
+!
+interface GigabitEthernet0/23
+ switchport mode trunk
+ speed 100
+ duplex full
+!
+interface GigabitEthernet0/24
+ switchport mode trunk
+!
+interface GigabitEthernet0/25
+!
+interface GigabitEthernet0/26
+!
+interface Vlan1
+ ip address 192.168.12.2 255.255.255.0
+!
+interface Vlan13
+ ip address 192.168.13.2 255.255.255.0
+!
+interface Vlan14
+ no ip address
+!
+interface Vlan15
+ no ip address
+!
+ip default-gateway 192.168.12.1
+ip http server
+ip http secure-server
+!
+!
+line con 0
+line vty 0 4
+ password CHANGEME
+ login
+ transport input telnet ssh
+line vty 5 15
+ password CHANGEME
+ login
+!
+end

@@ -1,0 +1,121 @@
+Current configuration : 1748 bytes
+!
+version 12.4
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Cisco871
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 CHANGEME
+!
+no aaa new-model
+!
+resource policy
+!
+ip cef
+!
+!
+no ip dhcp use vrf connected
+ip dhcp excluded-address 192.168.30.1 192.168.30.49
+ip dhcp excluded-address 192.168.30.100 192.168.30.255
+!
+ip dhcp pool VLAN1
+   network 192.168.30.0 255.255.255.0
+   default-router 192.168.30.1
+   dns-server 192.168.30.1
+!
+!
+vpdn enable
+!
+!
+!
+!
+username YOURDSLUSERNAME password 0 YOURDSLPASSWORD
+username admin password 0 CHANGEME
+!
+!
+!
+!
+!
+!
+interface FastEthernet0
+!
+interface FastEthernet1
+!
+interface FastEthernet2
+!
+interface FastEthernet3
+!
+interface FastEthernet4
+ no ip address
+ duplex auto
+ speed auto
+ pppoe enable group global
+ pppoe-client dial-pool-number 1
+ no cdp enable
+!
+interface Vlan1
+ ip address 192.168.30.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly
+!
+interface Dialer1
+ ip address negotiated
+ ip mtu 1492
+ ip nat outside
+ ip virtual-reassembly
+ encapsulation ppp
+ no ip mroute-cache
+ dialer pool 1
+ dialer-group 1
+ no cdp enable
+ ppp authentication chap pap callin
+ ppp chap hostname YOURDSLUSERNAME
+ ppp chap password 0 yah678
+ ppp pap sent-username YOURDSLUSERNAME password 0 YOURDSLPASSWORD
+ ppp ipcp dns request accept
+ ppp ipcp route default
+ ppp ipcp address accept
+!
+ip route 0.0.0.0 0.0.0.0 Dialer1
+!
+!
+no ip http server
+no ip http secure-server
+ip nat inside source list 1 interface Dialer1 overload
+!
+access-list 1 permit 192.168.0.0 0.0.255.255
+dialer-list 1 protocol ip permit
+!
+!
+!
+!
+control-plane
+!
+banner motd ^CDeveloped by Doorman^C
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ login local
+ no modem enable
+line aux 0
+line vty 0 4
+ logging synchronous
+ login local
+ history size 50
+ transport input telnet
+!
+scheduler max-task-time 5000
+!
+webvpn context Default_context
+ ssl authenticate verify all
+ !
+ no inservice
+!
+end
