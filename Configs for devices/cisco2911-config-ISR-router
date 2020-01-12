@@ -21,7 +21,8 @@ no ipv6 cef
 ip source-route
 ip cef
 !
-!
+! DHCP is done backwards with Cisco, you mark the addresses you don't want to use.
+! Also, you've probably figured out there's 4 VLAN's on this router. Notice how you have to define the pool and then the interface later on. Seems redundant, but you have to do it.
 ip dhcp excluded-address 192.168.12.1 192.168.12.49
 ip dhcp excluded-address 192.168.12.100 192.168.12.254
 ip dhcp excluded-address 192.168.13.1 192.168.13.49
