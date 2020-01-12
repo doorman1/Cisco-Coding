@@ -27,7 +27,7 @@ ip domain name yourhostname.local
 !
 !
 !
-!
+!This only has one VLAN but since it has four ports you have to define each one. Notice Port 4 is where the internet is coming in from (a !private static IP in this example, but usually it would be a public IP and it could be static, dynamic, or PPPOE).
 !
 !
 !
@@ -57,6 +57,7 @@ ip route 0.0.0.0 0.0.0.0 192.168.2.1
 ip http server
 no ip http secure-server
 ip nat inside source list 1 interface FastEthernet4 overload
+! You have no idea how much hardship that one line above this one cost me, it allows you to set an internal hostname and it still work even !if from outside - for example if you set blah.domain.org for your DynDNS, believe it or not, without this line, the router won't know to !look back at the router and not search hopelessly on the internet.
 ip nat inside source static tcp 192.168.25.1 23 interface FastEthernet4 23
 !
 access-list 1 permit 192.168.0.0 0.0.255.255
