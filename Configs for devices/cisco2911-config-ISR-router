@@ -163,6 +163,7 @@ ip http secure-server
 ip http timeout-policy idle 60 life 86400 requests 10000
 !
 ip nat inside source list 1 interface GigabitEthernet0/1 overload
+! You have no idea how much hardship that one line above this one cost me, it allows you to set an internal hostname and it still work even if from outside - for example if you set blah.domain.org for your DynDNS, believe it or not, without this line, the router won't know to look back at the router and not search hopelessly on the internet.
 ip nat inside source static tcp 192.168.12.1 23 interface GigabitEthernet0/1 23
 ip route 0.0.0.0 0.0.0.0 192.168.2.1
 !
